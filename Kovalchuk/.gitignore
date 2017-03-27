@@ -1,0 +1,6 @@
+# Ignore job scripts
+run.sh
+log/
+build/
+*.o
+*.pyc
