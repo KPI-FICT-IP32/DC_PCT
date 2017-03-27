@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+  echo "Usage: submit-and-watch <job-script-file>."
+}
+
+submit() {
+  local job_script="$1"
+  local task_id=$(qsub "$job_script")
+  while (qstat "$task_id"); do
+    sleep .7s
+  done
+}
+
+if [ "$#" -ne 1 ]; then
+  usage >&2
+  exit 1
+fi
+
+job_script="$1"
+if [ ! -f "$job_script" ]; then
+  echo "No such file: $job_script" >&2
+  exit 2
+fi
+
+submit $@
